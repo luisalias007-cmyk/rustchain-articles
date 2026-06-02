@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RustChain vs Monero: CPU mining, privacy, and hardware identity</title>
+  <meta name="description" content="A fair comparison of RustChain and Monero through CPU mining, privacy, community participation, and physical hardware identity.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(780px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .compare div {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>RustChain vs Monero: CPU mining, privacy, and hardware identity</h1>
+      <p class="meta">By luisalias007-cmyk. Comparison article for a public RustChain bounty submission.</p>
+
+      <p>RustChain and Monero both push back against the idea that useful participation must belong only to large, specialized mining operations. That is the easy similarity. Monero protects ordinary users by keeping mining practical on general-purpose CPUs and by making privacy the default transaction model. RustChain takes a different path: it tries to make a real physical machine, especially an older or unusual one, valuable as a network identity. One project asks whether a transaction graph can stay private. The other asks whether a reward claim can be tied to hardware that is hard to fake at scale.</p>
+
+      <div class="compare">
+        <div><strong>Monero</strong><br>Privacy-first money with CPU-friendly RandomX mining and strong default transaction privacy.</div>
+        <div><strong>RustChain</strong><br>Hardware-attested participation using Proof of Antiquity, age-aware incentives, and anti-emulation checks.</div>
+      </div>
+
+      <h2>Mining Accessibility</h2>
+      <p>Monero's CPU-mining story is mature and direct. Its proof-of-work design is meant to reduce the advantage of ASIC specialization and keep mining closer to commodity computers. That does not make every laptop profitable, but it keeps the mining conversation connected to ordinary machines instead of only custom hardware. This is one reason Monero has remained attractive to people who care about grassroots mining.</p>
+
+      <p>RustChain is also interested in ordinary machines, but it is not simply chasing equal hashpower. A slow old box can matter because it is a physical object with history. RustChain's hardware checks try to make mining identity less like a cloud account and more like an attested endpoint. Cache timing, clock behavior, instruction jitter, thermal response, and anti-emulation signals can help distinguish real hardware from cheap virtual copies. The goal is not "every CPU is equally powerful." The goal is "real, old, distinctive machines should be economically legible."</p>
+
+      <h2>Privacy Versus Physical Identity</h2>
+      <p>The deepest difference is philosophical. Monero is built around privacy. The user should not have to reveal who they paid, how much they sent, or which outputs are linked. Its social contract is close to digital cash: fungibility, plausible deniability, and resistance to transaction surveillance are central features.</p>
+
+      <p>RustChain moves in almost the opposite direction for miners. It wants stronger physical identity, not more anonymity at the hardware layer. If a reward is paid for antiquity, then the network needs some confidence that the claimant is not a farm of disposable virtual machines pretending to be rare hardware. That creates a tension Monero mostly avoids: RustChain must gather enough machine evidence to resist Sybil abuse while avoiding needless exposure of personal details. Good RustChain engineering has to treat fingerprinting as security-sensitive, not as a casual telemetry grab.</p>
+
+      <h2>Where Each Is Stronger</h2>
+      <p>Monero is much stronger as private money. It has a clear reason to exist, a long-running community, practical wallets, and a privacy model that users can understand: transactions should not leak ordinary financial behavior. RustChain is stronger as an experiment in hardware reuse and real-machine coordination. It is less about private payments and more about proving that old computers can be useful participants in a modern incentive network.</p>
+
+      <p>Monero's risk is that CPU-friendly mining does not automatically mean egalitarian outcomes. Electricity cost, botnets, malware, and operational discipline still matter. RustChain's risk is that hardware attestation can be noisy or gameable. If the fingerprinting layer is too weak, rewards become farmable. If it is too strict, honest old machines get rejected. Both projects live in the messy space between ideals and adversarial reality.</p>
+
+      <h2>Why The Comparison Matters</h2>
+      <p>A person searching for CPU mining may discover Monero first because it is the established privacy coin with a general-purpose mining story. RustChain should not claim to replace that. A better comparison is that Monero keeps personal financial activity private, while RustChain tries to make physical hardware history useful. They can appeal to overlapping communities: people who like self-hosting, repair culture, old computers, and networks that do not require corporate-scale infrastructure.</p>
+
+      <p>If RustChain succeeds, its most interesting contribution will not be a faster coin. It will be a new kind of participant registry where old hardware is not discarded as obsolete, but recognized as a scarce and verifiable resource. Monero proved that resisting mining centralization is worth caring about. RustChain asks a neighboring question: can the age and physical weirdness of a machine become part of the proof?</p>
+
+      <p>Useful links for readers: <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>, <a href="https://rustchain.org/explorer">RustChain Explorer</a>, <a href="https://github.com/Scottcjn/rustchain-bounties">RustChain Bounties</a>, <a href="https://github.com/Scottcjn/Rustchain/tree/main/docs">RustChain docs</a>, and <a href="https://www.getmonero.org/">Monero project site</a>.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
