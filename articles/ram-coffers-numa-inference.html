@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAM Coffers treats memory topology as part of the model</title>
+  <meta name="description" content="A short article about RAM Coffers, Elyan Labs' NUMA-aware LLM inference project for POWER8 and physical AI infrastructure.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 28px 0;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>RAM Coffers treats memory topology as part of the model</h1>
+      <p class="meta">By luisalias007-cmyk. Elyan Labs project article for a public bounty submission.</p>
+
+      <p>Most local LLM discussions start with a familiar question: how much VRAM do you have? RAM Coffers starts from a different place. It asks what happens when a model is too large, too memory-bound, or too hardware-specific for the usual GPU-first story, and when the machine in front of you is a multi-socket server with real NUMA topology. In that environment, memory is not just a storage pool. It is part of the inference path.</p>
+
+      <p>The RAM Coffers repository describes the project as NUMA-distributed conditional memory for LLM inference. The basic idea is to organize model knowledge across memory banks, route a query toward the relevant coffer, and reduce unnecessary cross-node traffic. That matters because a multi-socket system does not have one uniform memory distance. A CPU can access local RAM faster than memory attached to another socket. If an inference engine ignores that, token generation may spend invisible time crossing the interconnect.</p>
+
+      <h2>Why The Design Is Interesting</h2>
+      <p>RAM Coffers is not just a benchmark trick. It is a claim about how older, high-memory machines can become useful AI infrastructure if software respects their shape. The public README reports 147.54 tokens per second on an IBM POWER8 S824 with TinyLlama 1.1B Q4_K in a layered stack that includes POWER8 VSX, collapse paths, and DCBT prefetch. Whether a reader is excited or skeptical, the important part is that the claim is falsifiable: the repo includes benchmark guidance, topology capture steps, and a contributor path for comparing before and after results.</p>
+
+      <p>The architecture also fits Elyan Labs' broader Proof of Physical AI framing. RustChain rewards physical hardware identity through Proof of Antiquity. RAM Coffers gives the same kind of older hardware a productive job: run inference in a way that exploits memory layout, cache behavior, and architecture-specific instructions. The story is stronger when the machine is not only proving that it exists, but doing useful computation while it exists.</p>
+
+      <h2>Memory As A Routing Problem</h2>
+      <p>The phrase "weight banking" is useful because it changes the mental model. Instead of imagining the model as one flat blob that must be dragged uniformly through compute, RAM Coffers treats weights as placed knowledge. A query can be embedded, matched to domain signatures, and routed to a coffer where the relevant shard is expected to live. The language is experimental, but the underlying hardware concern is practical: reduce wasteful memory movement and keep the hot path close to the processor that needs it.</p>
+
+      <p>That is especially relevant for refurbished enterprise hardware. A retired server may have large RAM capacity, multiple sockets, and a topology that ordinary consumer inference tutorials barely discuss. RAM Coffers turns those quirks from liabilities into design inputs. It does not mean every old server becomes a great AI box. It means old servers deserve software that understands why they were built the way they were.</p>
+
+      <h2>What To Watch</h2>
+      <p>The open questions are good engineering questions. Can the routing stay accurate across model families? How portable are POWER8-specific primitives to Apple Silicon, x86, or ARM servers? How much of the speedup comes from topology-aware placement versus adjacent optimizations? How easy is it for an outside contributor to reproduce a meaningful comparison? RAM Coffers is valuable partly because it invites those questions in public.</p>
+
+      <div class="callout">
+        <p>Useful links: <a href="https://github.com/Scottcjn/ram-coffers">RAM Coffers GitHub</a>, <a href="https://elyanlabs.ai/">Elyan Labs</a>, <a href="https://rustchain.org/">RustChain</a>, <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>, and <a href="https://doi.org/10.5281/zenodo.18321905">RAM Coffers DOI</a>.</p>
+      </div>
+
+      <p>The takeaway is simple: RAM Coffers makes local inference less abstract. It ties the behavior of an LLM system to the physical layout of the machine running it. In a world where AI infrastructure is often described as anonymous cloud capacity, that is a useful counterpoint. Hardware has shape, history, bottlenecks, and personality. RAM Coffers tries to make those facts visible enough to optimize.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
