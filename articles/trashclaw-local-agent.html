@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrashClaw keeps tool-use agents small, local, and hardware-aware</title>
+  <meta name="description" content="A short article about TrashClaw, the Elyan Labs local tool-use agent that runs on Python, local LLM servers, and unusual hardware.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 28px 0;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>TrashClaw keeps tool-use agents small, local, and hardware-aware</h1>
+      <p class="meta">By luisalias007-cmyk. Elyan Labs project article for a public bounty submission.</p>
+
+      <p>Many agent frameworks become heavy before they become useful. They collect cloud assumptions, package managers, vendor-specific keys, separate memory systems, and enough ceremony that the first task is not using the agent, but installing the agent. TrashClaw is refreshing because it takes the opposite route: a local tool-use agent built around Python, terminal workflows, and ordinary files. Its public README describes a single-file, zero-dependency design for Python 3.7+ that can point at llama.cpp, Ollama, LM Studio, or another OpenAI-compatible local endpoint.</p>
+
+      <p>That makes TrashClaw feel close to the machine. The user describes a task; the model chooses tools; the loop reads files, searches, edits, runs commands with approval, applies patches, checks git status, and iterates. This is not a chat page trying to sound helpful. It is a terminal agent meant to touch a project, leave diffs, and produce work that can be inspected.</p>
+
+      <h2>Why Small Matters</h2>
+      <p>Small systems are easier to distrust correctly. A developer can inspect the file, understand the tool list, and reason about what the agent is allowed to do. TrashClaw's built-in tools cover the practical basics: file reads, writes, exact-string edits, unified diff patches, shell commands, grep-style search, directory listing, URL fetches, git status, git diff, commits, clipboard access, and a think tool for planning. That is enough to do real work without turning the agent into a black box.</p>
+
+      <p>The plugin model is also intentionally plain. A Python file in the plugin directory becomes a tool. For local users, that matters because the distance between "I need one special capability" and "the agent can now call it" stays short. The best local agents are not just products; they are workbenches. TrashClaw's design keeps the workbench editable.</p>
+
+      <h2>The Hardware Story</h2>
+      <p>TrashClaw fits the broader RustChain and Elyan Labs pattern because it treats old or unusual hardware as first-class. The README names a 2013 Mac Pro trashcan, PowerPC G4 systems, and IBM POWER8 hardware as part of the tested or intended environment. That is not just branding. Local agents are most interesting when they can run wherever the operator actually works: an old workstation, a lab machine, a server under a desk, or a refurbished box that still has useful life.</p>
+
+      <p>A zero-dependency Python agent is also easier to carry across that hardware. If the machine can run Python and a local LLM server, the agent has a chance. That is a different philosophy from agent stacks that assume modern GPUs, hosted APIs, or a polished desktop app. TrashClaw is closer to repair culture: use what is available, keep the interface direct, and make the system observable.</p>
+
+      <h2>Where It Can Grow</h2>
+      <p>The tradeoffs are real. Smaller local models can make mistakes on complex multi-step tasks. Shell approval adds friction. Hardware acceleration varies by architecture. But those limits are understandable, and the project makes them visible instead of hiding them behind a SaaS interface. That honesty is part of the appeal. A local operator can decide when to use auto-approval, when to keep commands manual, and which backend model is strong enough for the job.</p>
+
+      <div class="callout">
+        <p>Useful links: <a href="https://github.com/Scottcjn/trashclaw">TrashClaw GitHub</a>, <a href="https://clawcities.com/">ClawCities</a>, <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>, and <a href="https://rustchain.org/">RustChain</a>.</p>
+      </div>
+
+      <p>The useful takeaway is that TrashClaw does not need to be the biggest agent harness to matter. It shows a compact pattern for local tool use: terminal-native, inspectable, plugin-friendly, and aware that hardware diversity is not a defect. For the Elyan Labs ecosystem, that is a natural companion to Proof of Antiquity and RAM Coffers. Real machines, local control, and practical tools all point in the same direction.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
