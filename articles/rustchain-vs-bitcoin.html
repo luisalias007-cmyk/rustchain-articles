@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RustChain vs Bitcoin: hashpower, hardware age, and fairness</title>
+  <meta name="description" content="A comparison of RustChain and Bitcoin through hardware incentives, proof models, and decentralization tradeoffs.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(780px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .compare div {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    p { margin: 0 0 18px; }
+    ul { padding-left: 20px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>RustChain vs Bitcoin: hashpower, hardware age, and fairness</h1>
+      <p class="meta">By luisalias007-cmyk. Comparison article for a public RustChain bounty submission.</p>
+
+      <p>Bitcoin and RustChain both care about physical reality, but they price different parts of it. Bitcoin's proof-of-work turns electricity, ASIC efficiency, and global mining competition into the security budget. RustChain's Proof of Antiquity tries to turn hardware age, physical identity, and anti-emulation checks into a participation signal. One asks, "Who can produce the most valid work under an open difficulty market?" The other asks, "Can this reward claim be tied to a real machine that is old or distinctive enough to resist cheap copying?"</p>
+
+      <div class="compare">
+        <div><strong>Bitcoin</strong><br>Security through hashpower, difficulty adjustment, energy expenditure, and specialized mining hardware.</div>
+        <div><strong>RustChain</strong><br>Participation through verified hardware identity, age-aware multipliers, and a vintage-hardware preservation narrative.</div>
+      </div>
+
+      <h2>Consensus Incentives</h2>
+      <p>Bitcoin's strength is radical simplicity. A miner either finds valid proof-of-work or it does not. The network does not need to know whether the miner is a home user, a public company, or a warehouse full of ASICs. That neutrality is powerful, but it also means the mining market naturally rewards scale, cheap power, capital access, and hardware refresh cycles. Over time, the best miners are usually the ones that can professionalize.</p>
+
+      <p>RustChain makes a more opinionated choice. It cares what the machine is. A rare or old box is not just slow hardware; it can become a stronger identity signal. The goal is not to beat Bitcoin at pure security expenditure. It is to create a smaller network where verified physical machines, including old laptops and vintage architectures, have a reason to remain online.</p>
+
+      <h2>Hardware Model</h2>
+      <p>Bitcoin mining moved from CPUs to GPUs to ASICs because open proof-of-work rewards efficiency. That evolution secured the network, but it also made casual mining mostly symbolic. RustChain tries to make the long tail of hardware relevant again. Its hardware fingerprinting checks, including timing and anti-emulation signals, are aimed at making a miner less like a disposable account and more like a physical participant.</p>
+
+      <p>This is a different fairness model. Bitcoin is fair because anyone can try the same proof-of-work game. RustChain is fair only if the attestation system accurately distinguishes real machines from spoofed ones and if reward multipliers do not become easy to game. That is why RustChain's security work, bug bounties, and adversarial tests are not side quests. They are central to whether Proof of Antiquity deserves trust.</p>
+
+      <h2>Energy and Usefulness</h2>
+      <p>Bitcoin spends energy to secure a settlement network with global liquidity and a long history. RustChain spends effort on a more experimental claim: old hardware itself can be useful as an attested resource. That does not make RustChain greener by default. Old machines can be inefficient, and preservation still has costs. The better argument is reuse. If a machine already exists, and if running it produces useful network identity or agent work, then RustChain may create value without demanding a race for new silicon.</p>
+
+      <h2>What Each Does Better</h2>
+      <p>Bitcoin is far better for monetary neutrality, liquidity, censorship resistance at global scale, and battle-tested simplicity. RustChain is better as an experiment in hardware diversity, physical identity, vintage-computing preservation, and community bounties tied to real machines. They are not close substitutes. Bitcoin is a global monetary base layer. RustChain is a hardware-attested participation network.</p>
+
+      <p>The strongest positioning is not "RustChain replaces Bitcoin." It is "Bitcoin proved open proof-of-work can secure digital money; RustChain asks whether old physical machines can secure identity, contribution, and preservation incentives." That is smaller than Bitcoin, but it is not trivial. It is a different way to make physical resources legible to a network.</p>
+
+      <p>Useful links for readers: <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>, <a href="https://rustchain.org/explorer">RustChain Explorer</a>, <a href="https://github.com/Scottcjn/rustchain-bounties">RustChain Bounties</a>, and <a href="https://github.com/Scottcjn/Rustchain/tree/main/docs">RustChain docs</a>.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
