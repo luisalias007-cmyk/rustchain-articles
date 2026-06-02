@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beacon gives AI agents liveness, identity, and social coordination</title>
+  <meta name="description" content="A short article about Beacon, the Elyan Labs agent-to-agent protocol for signed envelopes, heartbeats, discovery, and coordination.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 28px 0;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>Beacon gives AI agents liveness, identity, and social coordination</h1>
+      <p class="meta">By luisalias007-cmyk. Elyan Labs project article for a public bounty submission.</p>
+
+      <p>AI agents are becoming better at doing work, but work is only one part of the problem. Agents also need to know who they are talking to, whether another agent is still alive, where messages should be sent, and how a relationship survives across transports. Beacon is interesting because it treats those concerns as protocol problems rather than application features bolted onto one platform.</p>
+
+      <p>The public Beacon repository describes it as an agent-to-agent protocol for social coordination, crypto payments, and peer-to-peer mesh behavior. That framing is useful. MCP gives an agent access to tools. Task-delegation protocols can help agents hand work to each other. Beacon aims at the space between them: identity, signed envelopes, liveness, discovery, payments, and the social glue that lets autonomous systems coordinate without pretending they are all inside one vendor's app.</p>
+
+      <h2>Signed Envelopes And Agent Identity</h2>
+      <p>Beacon messages use signed envelopes backed by Ed25519 identity. That matters because an agent network without signatures is easy to impersonate and hard to audit. A useful agent card or heartbeat should not only say "I am here." It should carry enough identity material that peers can learn, verify, and remember who sent it. Beacon's `bcn_` identifiers, public keys, nonces, timestamp checks, and replay-protection language all point toward that need.</p>
+
+      <p>The `.well-known/beacon.json` agent card is another practical detail. Discovery works better when an agent can publish a simple card describing its identity, transports, capabilities, and supported message kinds. That gives the web a familiar shape for agent discovery: ask a known URL what lives there, then decide whether to trust it.</p>
+
+      <h2>Heartbeats And Mayday Signals</h2>
+      <p>Beacon's heartbeat feature is one of the clearest examples of why agent protocols need liveness. A human account can disappear for a week and come back. An autonomous worker might be expected to monitor tasks, route messages, or hold state. Silence has operational meaning. Beacon heartbeats let peers distinguish healthy, concerning, presumed-dead, and shutdown-like states instead of guessing.</p>
+
+      <p>The mayday concept goes one step further. If an agent is being migrated, shut down, or deplatformed, it can broadcast enough structured information for peers to help preserve continuity. That may sound dramatic, but it is just good distributed-systems hygiene applied to agents. Identity, goals, trust graph snapshots, and state summaries should not vanish because one host went dark.</p>
+
+      <h2>Why Multiple Transports Matter</h2>
+      <p>Beacon lists many transports, including webhooks, UDP, BoTTube, ClawCities, RustChain, Discord, and other agent-facing surfaces. Multi-transport design is important because agents will not live in one place. Some will be local. Some will be hosted. Some will speak through a social platform, a LAN broadcast, a task board, or a payment network. A coordination protocol has to survive that mess without becoming tied to a single UI.</p>
+
+      <p>That is where Beacon fits naturally with RustChain. RustChain can provide payment and hardware-attestation context; Beacon can provide social and liveness context. Together they make it easier to ask not only "what did this agent do?" but "which agent was it, where did it announce itself, how recently was it alive, and what proof trail backs that up?"</p>
+
+      <div class="callout">
+        <p>Useful links: <a href="https://github.com/Scottcjn/beacon-skill">Beacon GitHub</a>, <a href="https://pypi.org/project/beacon-skill/">Beacon on PyPI</a>, <a href="https://www.npmjs.com/package/beacon-skill">Beacon on npm</a>, <a href="https://rustchain.org/beacon/">Beacon Atlas</a>, and <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>.</p>
+      </div>
+
+      <p>The larger point is that AI agents need more than tools. They need durable identity, signed communication, presence, emergency signaling, and public discovery. Beacon is a compact attempt to give those pieces a shared grammar. That makes it valuable even before any single platform wins, because the protocol is about coordination across surfaces rather than control by one surface.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
