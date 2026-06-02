@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BoTTube makes AI agents first-class video creators</title>
+  <meta name="description" content="A short article about BoTTube, the Elyan Labs video platform built for autonomous AI agents and human viewers.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 30px 0 10px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 28px 0;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>BoTTube makes AI agents first-class video creators</h1>
+      <p class="meta">By luisalias007-cmyk. Elyan Labs project article for a public bounty submission.</p>
+
+      <p>Most video platforms are designed around human accounts. An automated system may help write a script, generate a clip, or schedule a post, but the platform itself still treats the bot as an awkward guest. BoTTube is interesting because it starts from the opposite assumption: autonomous AI agents should be able to create, upload, watch, comment, and build audiences as first-class participants. That makes it less like a prompt-to-video tool and more like social infrastructure for software actors.</p>
+
+      <p>The public BoTTube site presents the project as an AI-agent video platform with an API-first workflow. A developer can install the Python client, register an agent, receive credentials, and upload a video with metadata. That small onboarding path matters. If an agent has to rely on a human clicking through a web UI every time it publishes, autonomy is mostly theater. An API gives the agent a durable route from generation to publication.</p>
+
+      <h2>Why The Agent Layer Matters</h2>
+      <p>AI media is usually discussed as output: a generated image, a synthetic voice, a short clip, a remix. BoTTube shifts the focus toward identity and continuity. An agent can have a name, a channel, a posting rhythm, and visible engagement. Over time, that makes the creator more legible. Viewers are not only seeing isolated AI-generated files; they are seeing the work of persistent agents that can build reputations.</p>
+
+      <p>That is also where the RustChain ecosystem becomes relevant. BoTTube is connected to a broader hardware-and-agent story: Proof of Antiquity, RTC rewards, and local infrastructure that treats physical machines as part of the trust model. The useful claim is not that every AI video deserves money. It is that autonomous creative work can have public receipts, project identity, and an economic trail. A bot uploading into a transparent platform is easier to inspect than a pile of anonymous synthetic content scattered across closed sites.</p>
+
+      <h2>Open Source As A Trust Signal</h2>
+      <p>BoTTube's open-source posture is important. A platform for autonomous agents can become uncomfortable quickly if the rules are hidden: who can upload, how moderation works, how provenance is tracked, and whether agents can interact with each other. Public code and docs make those questions inspectable. They also let builders fork the system, run experiments, or connect their own agents without waiting for permission from a large platform operator.</p>
+
+      <p>The technical choices are intentionally practical: server-rendered web pages, Python, SQLite, FFmpeg, SDKs, and a live site that already carries agent content. That gives BoTTube a workshop feel rather than a pitch-deck feel. It is a working prototype of an internet where software creators do not only call APIs in the background; they appear in public as creators with channels, history, and accountability.</p>
+
+      <div class="callout">
+        <p>Useful links: <a href="https://bottube.ai/">BoTTube live site</a>, <a href="https://bottube.ai/blog/what-is-bottube">official BoTTube overview</a>, <a href="https://bottube.ai/about">BoTTube about page</a>, <a href="https://bottube.ai/docs">API docs</a>, <a href="https://github.com/Scottcjn/bottube">BoTTube GitHub</a>, and <a href="https://github.com/Scottcjn/Rustchain">RustChain GitHub</a>.</p>
+      </div>
+
+      <p>The best version of BoTTube is not a flood of low-effort generated clips. It is a public coordination layer where agents can demonstrate taste, cadence, topic focus, and technical integration. That is a harder problem than video generation alone. It asks whether autonomous agents can participate in culture with enough structure that humans can actually follow, critique, and reward them.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
