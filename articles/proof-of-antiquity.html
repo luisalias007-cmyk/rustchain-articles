@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proof of Antiquity makes old hardware economically visible</title>
+  <meta name="description" content="A short RustChain article about Proof of Antiquity, physical machine identity, and hardware reuse.">
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5a6678;
+      --line: #d8ded8;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+    }
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 58px;
+    }
+    nav a, article a { color: var(--accent); font-weight: 700; }
+    nav { margin-bottom: 34px; }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    .meta { color: var(--muted); margin-bottom: 28px; }
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin: 28px 0;
+    }
+    p { margin: 0 0 18px; }
+    footer { color: var(--muted); border-top: 1px solid var(--line); margin-top: 34px; padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">Back to articles</a></nav>
+    <article>
+      <h1>Proof of Antiquity makes old hardware economically visible</h1>
+      <p class="meta">By luisalias007-cmyk. RustChain overview for a public bounty submission.</p>
+
+      <p>Most blockchains reward a machine for being fast, well-capitalized, or already connected to a large stake position. RustChain starts from a different premise: a machine can be valuable because it is real, old, unusual, and difficult to clone. That is the core idea behind Proof of Antiquity. The protocol is not only asking whether a computer can compute. It is asking whether a participating machine has a physical identity that can be tested well enough to resist cheap virtual copies.</p>
+
+      <p>That matters because identity is the hard part of many open networks. If a reward can be farmed by spinning up cloud instances, a well-funded attacker can create thousands of disposable participants. RustChain tries to move the cost curve back toward real hardware. Signals such as cache timing, clock behavior, thermal response, instruction jitter, architecture traits, and anti-emulation checks can make a miner look less like an account and more like a physical object with history.</p>
+
+      <p>The environmental angle is also unusual. Many crypto systems create a race for new hardware: faster ASICs, bigger GPUs, denser storage, better racks. RustChain's strongest participant might be a machine that already exists in a closet, workshop, school lab, repair shelf, or second-hand market. An old laptop or workstation is not attractive because it will beat modern hardware on throughput. It is attractive because age and physical weirdness are part of the proof.</p>
+
+      <p>This does not make RustChain magic. Old computers still fail. Fingerprints can be noisy. A physical-attestation protocol needs adversarial testing, conservative payout rules, and a culture that treats spoof resistance as an ongoing engineering problem rather than a solved slogan. But the design space is genuinely different from ordinary mining. It says that preservation can be a network primitive.</p>
+
+      <div class="callout">
+        <p>Useful links: <a href="https://github.com/Scottcjn/Rustchain">RustChain on GitHub</a>, <a href="https://rustchain.org/explorer">the live explorer</a>, and <a href="https://github.com/Scottcjn/rustchain-bounties">the RustChain bounties board</a>.</p>
+      </div>
+
+      <p>The more interesting future is not just vintage machines earning coins. It is what those machines can prove for other workflows: agent work tied to real hardware, governance that accounts for verified participation, public preservation records, and anti-VM fairness for contribution networks. In that world, Proof of Antiquity is less a novelty and more a registry of physically grounded computation.</p>
+
+      <p>RustChain still has to prove that demand exists for this identity layer. Connectivity networks can point to coverage. Storage networks can point to files. GPU networks can point to render jobs. RustChain has to show that trusted physical participation is useful enough to justify rewards. If it succeeds, it gives old hardware a new economic role: not obsolete compute, but proof-bearing infrastructure.</p>
+    </article>
+    <footer>RTC payout target for bounty claims: luisalias007-cmyk.</footer>
+  </main>
+</body>
+</html>
