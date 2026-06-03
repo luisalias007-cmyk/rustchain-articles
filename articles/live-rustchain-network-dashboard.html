@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live RustChain Network Dashboard</title>
+  <meta name="description" content="A live, mobile-responsive RustChain dashboard showing epoch, miner count, supply, and marketplace transaction activity.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202c;
+      --muted: #667184;
+      --line: #d8ded8;
+      --paper: #f7f4ed;
+      --panel: #ffffff;
+      --soft: #eef5f1;
+      --teal: #0f766e;
+      --rust: #a33b20;
+      --gold: #b98312;
+      --blue: #275d8f;
+      --green: #23744d;
+      --red: #b7372f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(247,244,237,0.96), rgba(247,244,237,1)),
+        repeating-linear-gradient(90deg, #f0ece2 0, #f0ece2 1px, transparent 1px, transparent 24px);
+      line-height: 1.45;
+    }
+    a { color: var(--teal); }
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+    .mast {
+      display: grid;
+      gap: 14px;
+      padding: 30px 0 22px;
+    }
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: 0 0 0 4px rgba(185,131,18,0.15);
+    }
+    .status-dot.online { background: var(--green); box-shadow: 0 0 0 4px rgba(35,116,77,0.15); }
+    .status-dot.error { background: var(--red); box-shadow: 0 0 0 4px rgba(183,55,47,0.15); }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: 2.25rem;
+      letter-spacing: 0;
+      line-height: 1.08;
+    }
+    .lede {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding-bottom: 24px;
+    }
+    .tool {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 0.92rem;
+      text-decoration: none;
+    }
+    button.tool {
+      cursor: pointer;
+      font: inherit;
+    }
+    button.tool:hover, .tool:hover { border-color: var(--teal); }
+    main { padding: 24px 0 44px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .metric {
+      min-height: 132px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      align-content: space-between;
+    }
+    .metric-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .metric-value {
+      margin-top: 10px;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--teal);
+      overflow-wrap: anywhere;
+    }
+    .metric:nth-child(2) .metric-value { color: var(--rust); }
+    .metric:nth-child(3) .metric-value { color: var(--gold); }
+    .metric:nth-child(4) .metric-value { color: var(--blue); }
+    .metric-sub {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .section {
+      margin-top: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+    .section h2 {
+      font-size: 1.1rem;
+      letter-spacing: 0;
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .progress-track {
+      height: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f1efe8;
+      overflow: hidden;
+    }
+    .progress-fill {
+      min-width: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transition: width 300ms ease;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .bar-list {
+      display: grid;
+      gap: 10px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 46px;
+      gap: 10px;
+      align-items: center;
+      min-height: 32px;
+    }
+    .bar-name, .bar-count {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .bar-shell {
+      height: 14px;
+      border-radius: 999px;
+      background: #ece8dd;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: var(--teal);
+    }
+    .bar-row:nth-child(2) .bar { background: var(--rust); }
+    .bar-row:nth-child(3) .bar { background: var(--gold); }
+    .bar-row:nth-child(4) .bar { background: var(--blue); }
+    .bar-row:nth-child(5) .bar { background: var(--green); }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+      background: var(--panel);
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.92rem;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      background: var(--soft);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.85rem;
+    }
+    .pill {
+      display: inline-block;
+      min-width: 72px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 8px;
+      text-align: center;
+      background: var(--soft);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .sources {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .source {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fbfaf5;
+    }
+    .source strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .source span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: var(--panel);
+      font-size: 0.9rem;
+      padding: 18px 0 28px;
+    }
+    .error-text { color: var(--red); font-weight: 700; }
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .split { grid-template-columns: 1fr; }
+      .sources { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 22px, 1180px); }
+      h1 { font-size: 1.65rem; }
+      .grid { grid-template-columns: 1fr; }
+      .metric { min-height: 114px; }
+      .metric-value { font-size: 1.65rem; }
+      .section { padding: 14px; }
+      .section-head { display: grid; }
+      .bar-row { grid-template-columns: 88px 1fr 34px; }
+      .toolbar { align-items: stretch; }
+      .tool { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap mast">
+      <div class="kicker"><span class="status-dot" id="statusDot"></span><span id="statusText">Connecting to live RustChain data</span></div>
+      <h1>Live RustChain Network Dashboard</h1>
+      <p class="lede">A compact public dashboard for epoch progress, miner count, RTC supply, and marketplace transaction activity. It refreshes automatically from the public RustChain explorer APIs.</p>
+    </div>
+    <div class="wrap toolbar">
+      <button class="tool" type="button" id="refreshBtn">Refresh now</button>
+      <a class="tool" href="https://explorer.rustchain.org/" target="_blank" rel="noopener">Open explorer</a>
+      <a class="tool" href="https://github.com/Scottcjn/Rustchain" target="_blank" rel="noopener">RustChain repo</a>
+      <span class="tool" id="lastUpdated">Last update: waiting</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="grid" aria-label="Live metrics">
+      <div class="metric">
+        <div>
+          <div class="metric-label">Current epoch</div>
+          <div class="metric-value" id="epochValue">--</div>
+        </div>
+        <p class="metric-sub" id="epochSub">slot and settlement window loading</p>
+      </div>
+      <div class="metric">
+        <div>
+          <div class="metric-label">Active miners</div>
+          <div class="metric-value" id="minerValue">--</div>
+        </div>
+        <p class="metric-sub" id="minerSub">from /api/miners</p>
+      </div>
+      <div class="metric">
+        <div>
+          <div class="metric-label">Total supply</div>
+          <div class="metric-value" id="supplyValue">--</div>
+        </div>
+        <p class="metric-sub">RTC reported by /epoch</p>
+      </div>
+      <div class="metric">
+        <div>
+          <div class="metric-label">Completed marketplace transactions</div>
+          <div class="metric-value" id="txValue">--</div>
+        </div>
+        <p class="metric-sub" id="txSub">from /agent/stats</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Epoch Progress</h2>
+        <p class="hint" id="epochHint">Waiting for live slot data.</p>
+      </div>
+      <div class="progress-track" aria-label="Epoch progress">
+        <div class="progress-fill" id="epochProgress"></div>
+      </div>
+    </section>
+
+    <section class="section split">
+      <div>
+        <div class="section-head">
+          <h2>Device Diversity</h2>
+          <p class="hint" id="diversityHint">Grouped by device family.</p>
+        </div>
+        <div class="bar-list" id="diversityBars">
+          <p class="hint">Loading miner architecture mix.</p>
+        </div>
+      </div>
+      <div>
+        <div class="section-head">
+          <h2>Node And Market</h2>
+          <p class="hint" id="nodeHint">Checking health.</p>
+        </div>
+        <div class="bar-list">
+          <div class="bar-row">
+            <div class="bar-name">Uptime</div>
+            <div class="bar-shell"><div class="bar" id="uptimeBar"></div></div>
+            <div class="bar-count" id="uptimeText">--</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">RTC volume</div>
+            <div class="bar-shell"><div class="bar" id="volumeBar"></div></div>
+            <div class="bar-count" id="volumeText">--</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Fees</div>
+            <div class="bar-shell"><div class="bar" id="feeBar"></div></div>
+            <div class="bar-count" id="feeText">--</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Recent Active Miners</h2>
+        <p class="hint">Sorted by most recent attestation.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Miner</th>
+              <th>Family</th>
+              <th>Architecture</th>
+              <th>Multiplier</th>
+              <th>Last Attest</th>
+            </tr>
+          </thead>
+          <tbody id="minerRows">
+            <tr><td colspan="5" class="hint">Loading miners.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Live Sources</h2>
+        <p class="hint">All cards read public JSON APIs and fall back gracefully on errors.</p>
+      </div>
+      <div class="sources">
+        <div class="source">
+          <strong>/epoch</strong>
+          <span>Epoch, slot, enrolled miners, epoch pot, and supply.</span>
+        </div>
+        <div class="source">
+          <strong>/api/miners</strong>
+          <span>Miner count, device family, hardware type, multiplier, and latest attestation.</span>
+        </div>
+        <div class="source">
+          <strong>/agent/stats</strong>
+          <span>Completed marketplace transactions, total jobs, volume, fees, and escrow.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Built by luisalias007-cmyk for the RustChain stats dashboard bounty. Public API host: explorer.rustchain.org.</div>
+  </footer>
+
+  <script>
+    const API = "https://explorer.rustchain.org";
+    const AUTO_REFRESH_MS = 30000;
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (value) => Number(value || 0).toLocaleString("en-US");
+    const pct = (value, max) => Math.max(0, Math.min(100, Math.round((value / Math.max(max, 1)) * 100)));
+
+    function age(ts) {
+      if (!ts) return "never";
+      const seconds = Math.max(0, Math.floor(Date.now() / 1000) - Number(ts));
+      if (seconds < 60) return seconds + "s ago";
+      if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
+      if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
+      return Math.floor(seconds / 86400) + "d ago";
+    }
+
+    function uptime(seconds) {
+      const s = Number(seconds || 0);
+      if (s < 3600) return Math.floor(s / 60) + "m";
+      if (s < 86400) return Math.floor(s / 3600) + "h";
+      return Math.floor(s / 86400) + "d";
+    }
+
+    async function fetchJSON(path) {
+      const res = await fetch(API + path, { cache: "no-store" });
+      if (!res.ok) throw new Error(path + " returned " + res.status);
+      return res.json();
+    }
+
+    function normalizeMiners(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.miners)) return payload.miners;
+      return [];
+    }
+
+    function setStatus(ok, text) {
+      $("statusDot").className = "status-dot " + (ok ? "online" : "error");
+      $("statusText").textContent = text;
+    }
+
+    function renderDiversity(miners) {
+      const counts = new Map();
+      miners.forEach((miner) => {
+        const family = miner.device_family || miner.hardware_type || "Unknown";
+        counts.set(family, (counts.get(family) || 0) + 1);
+      });
+      const rows = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const max = rows.reduce((m, row) => Math.max(m, row[1]), 1);
+      $("diversityHint").textContent = rows.length + " visible device groups from live miners.";
+      $("diversityBars").innerHTML = rows.map(([name, count]) => {
+        return `<div class="bar-row">
+          <div class="bar-name">${escapeHTML(name)}</div>
+          <div class="bar-shell"><div class="bar" style="width:${pct(count, max)}%"></div></div>
+          <div class="bar-count">${count}</div>
+        </div>`;
+      }).join("");
+    }
+
+    function renderMiners(miners) {
+      const rows = miners
+        .slice()
+        .sort((a, b) => Number(b.last_attest || 0) - Number(a.last_attest || 0))
+        .slice(0, 12);
+      $("minerRows").innerHTML = rows.map((miner) => {
+        return `<tr>
+          <td class="mono" title="${escapeHTML(miner.miner || "")}">${escapeHTML(shortId(miner.miner))}</td>
+          <td>${escapeHTML(miner.device_family || "Unknown")}</td>
+          <td>${escapeHTML(miner.device_arch || "Unknown")}</td>
+          <td><span class="pill">${escapeHTML(String(miner.antiquity_multiplier || 1))}x</span></td>
+          <td>${age(miner.last_attest)}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    function shortId(value) {
+      const text = String(value || "?");
+      return text.length > 26 ? text.slice(0, 12) + "..." + text.slice(-7) : text;
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    async function refresh() {
+      try {
+        const [health, epoch, minersPayload, agentStats] = await Promise.all([
+          fetchJSON("/health"),
+          fetchJSON("/epoch"),
+          fetchJSON("/api/miners"),
+          fetchJSON("/agent/stats")
+        ]);
+
+        const miners = normalizeMiners(minersPayload);
+        const stats = agentStats.stats || {};
+        const slot = Number(epoch.slot || 0);
+        const blocks = Number(epoch.blocks_per_epoch || 144);
+        const inEpoch = slot % blocks;
+        const progress = pct(inEpoch, blocks);
+
+        $("epochValue").textContent = fmt(epoch.epoch);
+        $("epochSub").textContent = "slot " + fmt(slot) + " of " + fmt(blocks) + " blocks per epoch";
+        $("epochHint").textContent = progress + "% complete, " + fmt(blocks - inEpoch) + " slots remaining.";
+        $("epochProgress").style.width = progress + "%";
+
+        $("minerValue").textContent = fmt(miners.length);
+        $("minerSub").textContent = fmt(minersPayload.pagination && minersPayload.pagination.total_enrolled || epoch.enrolled_miners || miners.length) + " enrolled miners reported";
+
+        $("supplyValue").textContent = fmt(epoch.total_supply_rtc);
+        $("txValue").textContent = fmt(stats.completed_jobs);
+        $("txSub").textContent = fmt(stats.total_jobs) + " total jobs, " + fmt(stats.open_jobs) + " open";
+
+        $("nodeHint").textContent = health.ok ? "Node " + (health.version || "unknown") + " is online." : "Health endpoint returned degraded status.";
+        $("uptimeText").textContent = uptime(health.uptime_s);
+        $("uptimeBar").style.width = pct(Number(health.uptime_s || 0), 86400) + "%";
+        $("volumeText").textContent = fmt(stats.total_rtc_volume);
+        $("volumeBar").style.width = pct(Number(stats.total_rtc_volume || 0), 1500) + "%";
+        $("feeText").textContent = fmt(stats.total_fees_collected);
+        $("feeBar").style.width = pct(Number(stats.total_fees_collected || 0), 100) + "%";
+
+        renderDiversity(miners);
+        renderMiners(miners);
+
+        $("lastUpdated").textContent = "Last update: " + new Date().toLocaleTimeString();
+        setStatus(true, "Live data connected");
+      } catch (err) {
+        setStatus(false, "Live data error");
+        $("lastUpdated").innerHTML = '<span class="error-text">Last update failed: ' + escapeHTML(err.message) + '</span>';
+      }
+    }
+
+    $("refreshBtn").addEventListener("click", refresh);
+    refresh();
+    window.setInterval(refresh, AUTO_REFRESH_MS);
+  </script>
+</body>
+</html>
